@@ -172,38 +172,40 @@ public class MyBarChartListener extends ChartTouchListener<BarLineChartBase<? ex
                 }
                 break;
             case ACTION_MOVE:
+                if (!mGestureDetector.onTouchEvent(event)) {
 
-                if (mTouchMode == DRAG) {
+                    if (mTouchMode == DRAG) {
 
-                    mChart.disableScroll();
-                    performDrag(event);
+                        mChart.disableScroll();
+                        performDrag(event);
 
-                } else if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM) {
+                    } else if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM) {
 
-                    mChart.disableScroll();
+                        mChart.disableScroll();
 
-                    if (mChart.isScaleXEnabled() || mChart.isScaleYEnabled())
-                        performZoom(event);
+                        if (mChart.isScaleXEnabled() || mChart.isScaleYEnabled())
+                            performZoom(event);
 
-                } else if (mTouchMode == NONE
-                        && Math.abs(distance(event.getX(), mTouchStartPoint.x, event.getY(),
-                        mTouchStartPoint.y)) > mDragTriggerDist) {
+                    } else if (mTouchMode == NONE
+                            && Math.abs(distance(event.getX(), mTouchStartPoint.x, event.getY(),
+                            mTouchStartPoint.y)) > mDragTriggerDist) {
 
-                    if (mChart.hasNoDragOffset()) {
+                        if (mChart.hasNoDragOffset()) {
 
-                        if (!mChart.isFullyZoomedOut() && mChart.isDragEnabled()) {
-                            mTouchMode = DRAG;
-                        } else {
+                            if (!mChart.isFullyZoomedOut() && mChart.isDragEnabled()) {
+                                mTouchMode = DRAG;
+                            } else {
 
+                                mLastGesture = ChartGesture.DRAG;
+
+                                if (mChart.isHighlightPerDragEnabled())
+                                    performHighlightDrag(event);
+                            }
+
+                        } else if (mChart.isDragEnabled()) {
                             mLastGesture = ChartGesture.DRAG;
-
-                            if (mChart.isHighlightPerDragEnabled())
-                                performHighlightDrag(event);
+                            mTouchMode = DRAG;
                         }
-
-                    } else if (mChart.isDragEnabled()) {
-                        mLastGesture = ChartGesture.DRAG;
-                        mTouchMode = DRAG;
                     }
                 }
                 break;
@@ -603,12 +605,13 @@ public class MyBarChartListener extends ChartTouchListener<BarLineChartBase<? ex
         }
 
         Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
+        Log.d("...", "X: " + e.getX() + " Y: " + e.getY());
         performHighlight(h, e);
     }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-
+        Log.d("...", "Single X: " + e.getX() + " Y: " + e.getY());
         mLastGesture = ChartGesture.SINGLE_TAP;
 
         OnChartGestureListener l = mChart.getOnChartGestureListener();
