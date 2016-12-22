@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         mChart.setXAxisRenderer(new MyXAxisRender(mChart.getViewPortHandler(), xAxis, mChart.getTransformer(YAxis.AxisDependency.LEFT), mChart));
 
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
+        xAxis.setDrawGridLines(true);
         xAxis.setAxisMaximum(144.5f);
         xAxis.setGranularity(1f); // only intervals of 1 day
         xAxis.setLabelCount(6);
