@@ -19,16 +19,15 @@ import java.util.List;
  * Created by n.romantsov on 06.12.2016.
  */
 
-public class MyXAxisRender extends XAxisRenderer {
+class MyXAxisRender extends XAxisRenderer {
     private MyBarChart chart;
 
-    public MyXAxisRender(ViewPortHandler viewPortHandler, XAxis xAxis, Transformer trans, MyBarChart chart) {
+    MyXAxisRender(ViewPortHandler viewPortHandler, XAxis xAxis, Transformer trans, MyBarChart chart) {
         super(viewPortHandler, xAxis, trans);
         this.chart = chart;
     }
 
-    protected Path mRenderGridLinesPath = new Path();
-    protected float[] mRenderGridLinesBuffer = new float[2];
+    private Path mRenderGridLinesPath = new Path();
 
     @Override
     public void renderGridLines(Canvas c) {
@@ -39,11 +38,11 @@ public class MyXAxisRender extends XAxisRenderer {
         int clipRestoreCount = c.save();
         c.clipRect(getGridClippingRect());
 
-        for (int i = 2; i + 2 < chart.getData().getEntryCount(); i += 6) {
+        for (int i = 8; i + 2 < chart.getData().getEntryCount(); i += 12) {
             if (mViewPortHandler.isInBoundsLeft(chart.getData().getDataSetByIndex(0).getEntriesForXValue(i).get(0).getX())
                     || mViewPortHandler.isInBoundsRight(chart.getData().getDataSetByIndex(0).getEntriesForXValue(i + 2).get(0).getX())) {
                 list.add(chart.getData().getDataSetByIndex(0).getEntriesForXValue(i).get(0).getX());
-                list.add(chart.getData().getDataSetByIndex(0).getEntriesForXValue(i + 2).get(0).getX());
+                list.add(chart.getData().getDataSetByIndex(0).getEntriesForXValue(i + 3).get(0).getX());
             }
         }
 
