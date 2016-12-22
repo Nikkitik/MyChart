@@ -1,12 +1,11 @@
 package com.example.nromantsov.mychart;
 
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -14,27 +13,26 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 
-public class MainActivity extends DataBase {
+public class MainActivity extends AppCompatActivity {
     MyBarChart mChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_nik);
 
         mChart = (MyBarChart) findViewById(R.id.chart1);
         mChart.getDescription().setEnabled(false);
 
-        IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(mChart);
         XAxis xAxis = mChart.getXAxis();
         mChart.setXAxisRenderer(new MyXAxisRender(mChart.getViewPortHandler(), xAxis, mChart.getTransformer(YAxis.AxisDependency.LEFT), mChart));
 
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(true);
-        xAxis.setAxisMaximum(365.5f);
+        xAxis.setDrawGridLines(false);
+        xAxis.setAxisMaximum(144.5f);
         xAxis.setGranularity(1f); // only intervals of 1 day
-        xAxis.setLabelCount(5);
-        xAxis.setValueFormatter(xAxisFormatter);
+        xAxis.setLabelCount(6);
+
 
         IAxisValueFormatter custom = new MyAxisValueFormatter();
         YAxis leftAxis = mChart.getAxisLeft();
@@ -44,12 +42,9 @@ public class MainActivity extends DataBase {
         leftAxis.setSpaceTop(15f);
         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
-        XYMarkerView mv = new XYMarkerView(this, xAxisFormatter);
-        mv.setChartView(mChart); // For bounds control
-        mChart.setMarker(mv); // Set the marker to the chart
-        mChart.setVisibleXRange(1, 10f);
+        mChart.setVisibleXRange(1, 30f);
 
-        setData(365, 50);
+        setData(144, 50);
     }
 
     private void setData(int count, float range) {
@@ -72,7 +67,8 @@ public class MainActivity extends DataBase {
 
         BarData data = new BarData(dataSets);
         data.setValueTextSize(10f);
-        data.setBarWidth(0.5f);
+        data.setBarWidth(0.7f);
+        data.setDrawValues(false);
 
         mChart.setData(data);
     }
