@@ -7,7 +7,9 @@ import android.util.Log;
 
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.renderer.XAxisRenderer;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Transformer;
+import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
@@ -79,5 +81,32 @@ public class MyXAxisRender extends XAxisRenderer {
         c.drawPath(gridLinePath, mGridPaint);
 
         gridLinePath.reset();
+    }
+
+    @Override
+    protected void drawLabels(Canvas c, float pos, MPPointF anchor) {
+        final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
+
+        float[] positions = new float[48];
+        String[] strings = new String[48];
+        int hour = 0;
+        float k = 3.5F;
+        for (int i = 0; i < positions.length; i+=2) {
+
+            positions[i] = k; //mXAxis.mCenteredEntries[i / 2];
+            positions[i + 1] = k; //mXAxis.mCenteredEntries[i / 2];
+            strings[i] =(hour<10?"0":"")+ hour + ":00"; //mXAxis.mCenteredEntries[i / 2];
+            strings[i + 1] =(hour<10?"0":"")+ hour + ":00"; //mXAxis.mCenteredEntries[i / 2];
+            hour++;
+            k += 6;
+//            drawLabel(c, "ssss", x, pos, anchor, labelRotationAngleDegrees);
+        }
+
+        mTrans.pointValuesToPixel(positions);
+
+        for (int i = 0; i < positions.length; i+=2) {
+            if (mViewPortHandler.isInBoundsX(positions[i]))
+            drawLabel(c, strings[i], positions[i], pos, anchor, labelRotationAngleDegrees);
+        }
     }
 }
