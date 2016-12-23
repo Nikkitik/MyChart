@@ -105,9 +105,9 @@ public class MyBarChartRender extends BarChartRenderer {
 
         final boolean isSingleColor = dataSet.getColors().size() == 1;
 
-        if (isSingleColor) {
-            mRenderPaint.setColor(dataSet.getColor());
-        }
+//        if (isSingleColor) {
+//            mRenderPaint.setColor(dataSet.getColor());
+//        }
 
         for (int j = 0; j < buffer.size(); j += 4) {
 
@@ -122,6 +122,7 @@ public class MyBarChartRender extends BarChartRenderer {
                 // is out of bounds, reuse colors.
                 mRenderPaint.setColor(dataSet.getColor(j / 4));
             }
+
             c.drawPath(getPathtopRoundRectTop(buffer.buffer[j], buffer.buffer[j + 1],
                     buffer.buffer[j + 2], buffer.buffer[j + 3], cornerRadius), mRenderPaint);
 
