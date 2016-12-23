@@ -165,15 +165,24 @@ public class MyBarChartRender extends BarChartRenderer {
             if (!isInBoundsX(e, set))
                 continue;
 
-            if (e.getX() % 3 == 0) {
-                xMin = e.getX() - 1;
-                xMax = e.getX() + 1;
-            } else if ((e.getX() + 1) % 3 == 0) {
-                xMin = e.getX();
-                xMax = e.getX() + 2;
-            } else if ((e.getX() - 1) % 3 == 0) {
-                xMin = e.getX() - 2;
+            if (e.getX() % 6 == 0) {
+                xMin = e.getX() - 5;
                 xMax = e.getX();
+            } else if ((e.getX() + 1) % 6 == 0) {
+                xMin = e.getX() - 4;
+                xMax = e.getX() + 1;
+            } else if ((e.getX() + 2) % 6 == 0) {
+                xMin = e.getX() - 3;
+                xMax = e.getX() + 2;
+            } else if ((e.getX() + 3) % 6 == 0) {
+                xMin = e.getX() - 2;
+                xMax = e.getX() + 3;
+            } else if ((e.getX() + 4) % 6 == 0) {
+                xMin = e.getX() - 1;
+                xMax = e.getX() + 4;
+            } else if ((e.getX() + 5) % 6 == 0) {
+                xMin = e.getX();
+                xMax = e.getX() + 5;
             }
 
             Transformer trans = mChart.getTransformer(set.getAxisDependency());
@@ -190,8 +199,8 @@ public class MyBarChartRender extends BarChartRenderer {
     }
 
     private void prepareBarHighlight(float xMin, float xMax, float barWidthHalf, Transformer trans) {
-        float left = xMin - barWidthHalf * 2;
-        float right = xMax + barWidthHalf * 2;
+        float left = xMin - barWidthHalf * 1.4f;
+        float right = xMax + barWidthHalf * 1.4f;
 
         mBarRect.set(left, mViewPortHandler.offsetTop() + mViewPortHandler.contentTop(), right, 0);
 
