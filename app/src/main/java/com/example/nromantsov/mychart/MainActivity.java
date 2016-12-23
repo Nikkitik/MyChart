@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         mChart.setVisibleXRange(1, 30f);
 
-        setData(144, 50);
+        setData(144, 17);
     }
 
     private void setData(int count, float range) {
@@ -55,12 +56,24 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = (int) start; i < start + count + 1; i++) {
             float mult = (range + 1);
-            float val = (float) (Math.random() * mult);
-            yVals1.add(new BarEntry(i, val));
+            float walk = (float) (Math.random() * mult);
+            float aerobic = (float) Math.random() * mult;
+            float run = (float) Math.random() * mult;
+
+            if (walk - aerobic > 0)
+                aerobic = walk - aerobic;
+            else
+                aerobic = 0;
+            if (aerobic - run > 0)
+                run = aerobic - run;
+            else
+                run = 0;
+
+            yVals1.add(new BarEntry(i, new float[] {walk, aerobic, run}));
         }
 
-        MyBarDataSet set1 = new MyBarDataSet(yVals1, "The year 2017");
-        set1.setColors(ColorTemplate.MATERIAL_COLORS);
+        BarDataSet set1 = new BarDataSet(yVals1, "The year 2017");
+        set1.setColors(MyColor.THREE_COLORS);
 
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1);
