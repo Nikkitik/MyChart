@@ -56,18 +56,10 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = (int) start; i < start + count + 1; i++) {
             float mult = (range + 1);
-            float walk = (float) (Math.random() * mult);
+            float walk = (float) Math.random() * mult;
             float aerobic = (float) Math.random() * mult;
             float run = (float) Math.random() * mult;
 
-            if (walk - aerobic > 0)
-                aerobic = walk - aerobic;
-            else
-                aerobic = 0;
-            if (aerobic - run > 0)
-                run = aerobic - run;
-            else
-                run = 0;
 
             yVals1.add(new BarEntry(i, new float[] {walk, aerobic, run}));
         }
