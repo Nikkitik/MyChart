@@ -10,4 +10,6 @@ public class MyColor extends ColorTemplate {
     public static final int[] THREE_COLORS = {
             rgb("#2ecc71"), rgb("#f1c40f"), rgb("#e74c3c")
     };
+
+    public static final int WHITE_COLORS = rgb("#574eff");
 }
