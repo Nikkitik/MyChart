@@ -26,14 +26,14 @@ import java.util.List;
  * Created by n.romantsov on 05.12.2016.
  */
 
-public class MyBarChartRender extends BarChartRenderer {
+class MyBarChartRender extends BarChartRenderer {
 
-    public static final float CORNER_RADIUS_BIG = Utils.convertDpToPixel(4f);
-    public static final float CORNER_RADIUS_SMALL = Utils.convertDpToPixel(2f);
-    public static final int RADIUS_BARS_THRESHOLD = 10;
-    public static float cornerRadius;
+    private static final float CORNER_RADIUS_BIG = Utils.convertDpToPixel(4f);
+    private static final float CORNER_RADIUS_SMALL = Utils.convertDpToPixel(2f);
+    private static final int RADIUS_BARS_THRESHOLD = 10;
+    private static float cornerRadius;
 
-    public MyBarChartRender(BarDataProvider chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
+    MyBarChartRender(BarDataProvider chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
         super(chart, animator, viewPortHandler);
     }
 
@@ -109,7 +109,7 @@ public class MyBarChartRender extends BarChartRenderer {
 //            mRenderPaint.setColor(dataSet.getColor());
 //        }
 
-        for (int j = 0; j < buffer.size(); j += 4) {
+        for (int j = 0; j < buffer.size(); j += 12) {
 
             if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2]))
                 continue;
@@ -117,14 +117,42 @@ public class MyBarChartRender extends BarChartRenderer {
             if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
                 break;
 
-            if (!isSingleColor) {
-                // Set the color for the currently drawn value. If the index
-                // is out of bounds, reuse colors.
-                mRenderPaint.setColor(dataSet.getColor(j / 4));
+//            if (!isSingleColor) {
+//                // Set the color for the currently drawn value. If the index
+//                // is out of bounds, reuse colors.
+//                mRenderPaint.setColor(dataSet.getColor(j / 4));
+//            }
+
+
+            if (buffer.buffer[j + 1] == buffer.buffer[j + 9]) {
+                if (buffer.buffer[j + 1] == buffer.buffer[j + 5]) {
+                    c.drawPath(getPathRoundRectTop(buffer.buffer[j], buffer.buffer[j + 1],
+                            buffer.buffer[j + 2], buffer.buffer[j + 3], cornerRadius), mRenderPaint);
+                    mRenderPaint.setColor(0 - 13710223);
+                } else {
+                    c.drawPath(getPathRectTop(buffer.buffer[j], buffer.buffer[j + 1],
+                            buffer.buffer[j + 2], buffer.buffer[j + 3]), mRenderPaint);
+                    mRenderPaint.setColor(0 - 13710223);
+                }
+            } else {
+                c.drawPath(getPathRectTop(buffer.buffer[j], buffer.buffer[j + 1],
+                        buffer.buffer[j + 2], buffer.buffer[j + 3]), mRenderPaint);
+                mRenderPaint.setColor(0 - 13710223);
             }
 
-            c.drawPath(getPathtopRoundRectTop(buffer.buffer[j], buffer.buffer[j + 1],
-                    buffer.buffer[j + 2], buffer.buffer[j + 3], cornerRadius), mRenderPaint);
+            if (buffer.buffer[j + 5] == buffer.buffer[j + 9]) {
+                c.drawPath(getPathRoundRectTop(buffer.buffer[j + 4], buffer.buffer[j + 5],
+                        buffer.buffer[j + 6], buffer.buffer[j + 7], cornerRadius), mRenderPaint);
+                mRenderPaint.setColor(0 - 932849);
+            } else {
+                c.drawPath(getPathRectTop(buffer.buffer[j + 4], buffer.buffer[j + 5],
+                        buffer.buffer[j + 6], buffer.buffer[j + 7]), mRenderPaint);
+                mRenderPaint.setColor(0 - 932849);
+
+                c.drawPath(getPathRoundRectTop(buffer.buffer[j + 8], buffer.buffer[j + 9],
+                        buffer.buffer[j + 10], buffer.buffer[j + 11], cornerRadius), mRenderPaint);
+                mRenderPaint.setColor(0 - 161884);
+            }
 
             if (drawBorder) {
                 c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
@@ -133,18 +161,32 @@ public class MyBarChartRender extends BarChartRenderer {
         }
     }
 
-    private Path getPathtopRoundRectTop(float left, float top, float right, float bottom,
-                                        float radius) {
+    private Path getPathRoundRectTop(float left, float top, float right, float bottom,
+                                     float radius) {
 
+        Path path = new Path();
         if (top + radius * 2 > bottom) {
             radius = radius * ((bottom - top) / (2f * radius));
         }
 
-        Path path = new Path();
         path.moveTo(right, bottom);
         path.lineTo(left, bottom);
         path.arcTo(new RectF(left, top, left + radius * 2, top + radius * 2), 180, 90);
         path.arcTo(new RectF(right - radius * 2, top, right, top + radius * 2), 270, 90);
+
+        path.close();
+        return path;
+    }
+
+    private Path getPathRectTop(float left, float top, float right, float bottom) {
+
+        Path path = new Path();
+
+        path.moveTo(right, bottom);
+        path.lineTo(left, bottom);
+        path.lineTo(left, top);
+        path.lineTo(right, top);
+        path.lineTo(right, bottom);
         path.close();
         return path;
     }
@@ -188,20 +230,22 @@ public class MyBarChartRender extends BarChartRenderer {
 
             Transformer trans = mChart.getTransformer(set.getAxisDependency());
 
-            mHighlightPaint.setColor(set.getHighLightColor());
-            mHighlightPaint.setAlpha(set.getHighLightAlpha());
+            mHighlightPaint.setColor(MyColor.WHITE_COLORS);
+            mHighlightPaint.setAlpha(255);
 
             prepareBarHighlight(xMin, xMax, barData.getBarWidth() / 2f, trans);
 
             setHighlightDrawPos(high, mBarRect);
 
             c.drawRect(mBarRect, mHighlightPaint);
+
+            drawData(c);
         }
     }
 
     private void prepareBarHighlight(float xMin, float xMax, float barWidthHalf, Transformer trans) {
-        float left = xMin - barWidthHalf * 1.4f;
-        float right = xMax + barWidthHalf * 1.4f;
+        float left = xMin - barWidthHalf * 1.6f;
+        float right = xMax + barWidthHalf * 1.6f;
 
         mBarRect.set(left, mViewPortHandler.offsetTop() + mViewPortHandler.contentTop(), right, 0);
 
