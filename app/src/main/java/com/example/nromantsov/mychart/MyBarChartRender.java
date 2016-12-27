@@ -120,38 +120,38 @@ class MyBarChartRender extends BarChartRenderer {
 //            if (!isSingleColor) {
 //                // Set the color for the currently drawn value. If the index
 //                // is out of bounds, reuse colors.
-//                mRenderPaint.setColor(dataSet.getColor(j / 4));
+//                mRenderPaint.setColor(dataSet.getColor(j / 12));
 //            }
 
 
             if (buffer.buffer[j + 1] == buffer.buffer[j + 9]) {
                 if (buffer.buffer[j + 1] == buffer.buffer[j + 5]) {
+                    mRenderPaint.setColor(0 - 13710223);
                     c.drawPath(getPathRoundRectTop(buffer.buffer[j], buffer.buffer[j + 1],
                             buffer.buffer[j + 2], buffer.buffer[j + 3], cornerRadius), mRenderPaint);
-                    mRenderPaint.setColor(0 - 13710223);
                 } else {
+                    mRenderPaint.setColor(0 - 13710223);
                     c.drawPath(getPathRectTop(buffer.buffer[j], buffer.buffer[j + 1],
                             buffer.buffer[j + 2], buffer.buffer[j + 3]), mRenderPaint);
-                    mRenderPaint.setColor(0 - 13710223);
                 }
             } else {
+                mRenderPaint.setColor(0 - 13710223);
                 c.drawPath(getPathRectTop(buffer.buffer[j], buffer.buffer[j + 1],
                         buffer.buffer[j + 2], buffer.buffer[j + 3]), mRenderPaint);
-                mRenderPaint.setColor(0 - 13710223);
             }
 
             if (buffer.buffer[j + 5] == buffer.buffer[j + 9]) {
+                mRenderPaint.setColor(0 - 932849);
                 c.drawPath(getPathRoundRectTop(buffer.buffer[j + 4], buffer.buffer[j + 5],
                         buffer.buffer[j + 6], buffer.buffer[j + 7], cornerRadius), mRenderPaint);
-                mRenderPaint.setColor(0 - 932849);
             } else {
+                mRenderPaint.setColor(0 - 932849);
                 c.drawPath(getPathRectTop(buffer.buffer[j + 4], buffer.buffer[j + 5],
                         buffer.buffer[j + 6], buffer.buffer[j + 7]), mRenderPaint);
-                mRenderPaint.setColor(0 - 932849);
 
+                mRenderPaint.setColor(0 - 161884);
                 c.drawPath(getPathRoundRectTop(buffer.buffer[j + 8], buffer.buffer[j + 9],
                         buffer.buffer[j + 10], buffer.buffer[j + 11], cornerRadius), mRenderPaint);
-                mRenderPaint.setColor(0 - 161884);
             }
 
             if (drawBorder) {
