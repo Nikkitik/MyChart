@@ -10,7 +10,6 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 
@@ -46,6 +45,14 @@ public class MainActivity extends AppCompatActivity {
         mChart.setVisibleXRange(1, 30f);
 
         setData(144, 17);
+
+        mChart.setCall(new MyBarChart.Call() {
+            @Override
+            public void doCall() {
+                DialogFragmentPage dialogFragmentPage = new DialogFragmentPage();
+                dialogFragmentPage.show(getSupportFragmentManager(), "dialog");
+            }
+        });
     }
 
     private void setData(int count, float range) {
