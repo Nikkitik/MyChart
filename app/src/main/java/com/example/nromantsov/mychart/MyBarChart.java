@@ -1,20 +1,27 @@
 package com.example.nromantsov.mychart;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.utils.Utils;
 
 /**
  * Created by n.romantsov on 05.12.2016.
  */
 
 public class MyBarChart extends BarChart {
+
+    public interface Call {
+        void doCall();
+    }
+
+    Call ref;
+
+    void setCall(Call o) {
+        ref = o;
+        ((MyBarChartListener) mChartTouchListener).setRef(o);
+    }
 
     public MyBarChart(Context context) {
         super(context);
@@ -43,6 +50,4 @@ public class MyBarChart extends BarChart {
         // calculate axis range (min / max) according to provided data
         mAxisLeft.calculate(mData.getYMin(YAxis.AxisDependency.LEFT), mData.getYMax(YAxis.AxisDependency.LEFT));
     }
-
-
 }
