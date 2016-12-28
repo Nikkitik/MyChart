@@ -1,0 +1,119 @@
+package com.example.nromantsov.mychart;
+
+import android.app.Dialog;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.RelativeLayout;
+
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+
+import java.util.ArrayList;
+
+public class DialogFragmentPage extends DialogFragment {
+
+    MyBarChart mChart;
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        final RelativeLayout root = new RelativeLayout(getActivity());
+        root.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(root);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        return dialog;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.dialog_layout, container, false);
+
+        Toolbar toolbar = (Toolbar) v.findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.close);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+
+        mChart = (MyBarChart) v.findViewById(R.id.chartFragment);
+        mChart.getDescription().setEnabled(false);
+
+        XAxis xAxis = mChart.getXAxis();
+        mChart.setXAxisRenderer(new MyXAxisRender(mChart.getViewPortHandler(), xAxis, mChart.getTransformer(YAxis.AxisDependency.LEFT), mChart));
+
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setAxisMaximum(30.5f);
+        xAxis.setGranularity(1f); // only intervals of 1 day
+        xAxis.setLabelCount(6);
+
+        IAxisValueFormatter custom = new MyAxisValueFormatter();
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setLabelCount(8, false);
+        leftAxis.setValueFormatter(custom);
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        leftAxis.setSpaceTop(15);
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+
+        mChart.setVisibleXRange(1, 30.5f);
+
+        setData(30, 17);
+
+        mChart.setCall(new MyBarChart.Call() {
+            @Override
+            public void doCall() {
+
+            }
+        });
+        return v;
+    }
+
+    private void setData(int count, float range) {
+
+        float start = 1f;
+
+        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+
+        for (int i = (int) start; i < start + count + 1; i++) {
+            float mult = (range + 1);
+            float walk = (float) Math.random() * mult;
+            float aerobic = (float) Math.random() * mult;
+            float run = (float) Math.random() * mult;
+
+
+            yVals1.add(new BarEntry(i, new float[]{walk, aerobic, run}));
+        }
+
+        BarDataSet set1 = new BarDataSet(yVals1, "The year 2017");
+        set1.setColors(MyColor.THREE_COLORS);
+
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1);
+
+        BarData data = new BarData(dataSets);
+        data.setValueTextSize(10f);
+        data.setBarWidth(0.5f);
+        data.setDrawValues(false);
+
+        mChart.setData(data);
+    }
+}
