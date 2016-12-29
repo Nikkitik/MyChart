@@ -3,6 +3,7 @@ package com.example.nromantsov.mychart;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -25,7 +26,10 @@ public class MainActivity extends AppCompatActivity {
         mChart.getDescription().setEnabled(false);
 
         XAxis xAxis = mChart.getXAxis();
-        mChart.setXAxisRenderer(new MyXAxisRender(mChart.getViewPortHandler(), xAxis, mChart.getTransformer(YAxis.AxisDependency.LEFT), mChart));
+        MyXAxisRender myXAxisRender = new MyXAxisRender(mChart.getViewPortHandler(), xAxis, mChart.getTransformer(YAxis.AxisDependency.LEFT), mChart);
+        myXAxisRender.setNumX(3.5f);
+        myXAxisRender.setNumGridLines(7, 6, 14);
+        mChart.setXAxisRenderer(myXAxisRender);
 
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(true);
@@ -44,12 +48,26 @@ public class MainActivity extends AppCompatActivity {
 
         mChart.setVisibleXRange(1, 30f);
 
+        Legend legend = mChart.getLegend();
+        legend.setEnabled(false);
+
         setData(144, 17);
 
         mChart.setCall(new MyBarChart.Call() {
             @Override
-            public void doCall() {
+            public void doCall(float x) {
                 DialogFragmentPage dialogFragmentPage = new DialogFragmentPage();
+                Bundle bundle = new Bundle();
+                bundle.putFloat("X", x);
+                dialogFragmentPage.setArguments(bundle);
+
+                dialogFragmentPage.setDialogInter(new DialogFragmentPage.DialogInter() {
+                    @Override
+                    public void onDismiss() {
+                        mChart.highlightValue(null);
+                    }
+                });
+
                 dialogFragmentPage.show(getSupportFragmentManager(), "dialog");
             }
         });
