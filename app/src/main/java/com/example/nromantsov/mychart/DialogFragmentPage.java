@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -25,6 +27,13 @@ import java.util.ArrayList;
 public class DialogFragmentPage extends DialogFragment {
 
     MyBarChart mChart;
+    float x;
+
+    @Override
+    public void onStart() {
+        getDialog().getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        super.onStart();
+    }
 
     @NonNull
     @Override
@@ -32,10 +41,11 @@ public class DialogFragmentPage extends DialogFragment {
         final RelativeLayout root = new RelativeLayout(getActivity());
         root.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        Dialog dialog = new Dialog(getContext(), R.style.Dialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(root);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        x = getArguments().getFloat("X");
 
         return dialog;
     }
@@ -58,10 +68,14 @@ public class DialogFragmentPage extends DialogFragment {
         mChart.getDescription().setEnabled(false);
 
         XAxis xAxis = mChart.getXAxis();
-        mChart.setXAxisRenderer(new MyXAxisRender(mChart.getViewPortHandler(), xAxis, mChart.getTransformer(YAxis.AxisDependency.LEFT), mChart));
+        MyXAxisRender myXAxisRender = new MyXAxisRender(mChart.getViewPortHandler(), xAxis, mChart.getTransformer(YAxis.AxisDependency.LEFT), mChart);
+        myXAxisRender.setNumX(3f);
+        myXAxisRender.setNumGridLines(6, 5, 13);
+        myXAxisRender.setGetXY(x);
+        mChart.setXAxisRenderer(myXAxisRender);
 
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
+        xAxis.setDrawGridLines(true);
         xAxis.setAxisMaximum(30.5f);
         xAxis.setGranularity(1f); // only intervals of 1 day
         xAxis.setLabelCount(6);
@@ -76,15 +90,37 @@ public class DialogFragmentPage extends DialogFragment {
 
         mChart.setVisibleXRange(1, 30.5f);
 
+        Legend legend = mChart.getLegend();
+        legend.setEnabled(false);
+
         setData(30, 17);
 
         mChart.setCall(new MyBarChart.Call() {
             @Override
-            public void doCall() {
-
+            public void doCall(float x) {
+                dismiss();
             }
         });
+
         return v;
+    }
+
+    interface DialogInter {
+        void onDismiss();
+    }
+
+    DialogInter dialogInter;
+
+    public void setDialogInter(DialogInter dialogInter) {
+        this.dialogInter = dialogInter;
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        if (dialogInter != null){
+            dialogInter.onDismiss();
+        }
     }
 
     private void setData(int count, float range) {
