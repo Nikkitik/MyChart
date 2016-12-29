@@ -3,13 +3,12 @@ package com.example.nromantsov.mychart;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.util.Log;
 
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.renderer.XAxisRenderer;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Transformer;
-import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
@@ -21,10 +20,29 @@ import java.util.List;
 
 class MyXAxisRender extends XAxisRenderer {
     private MyBarChart chart;
+    private float numX = 3.5f;
+    private float getX = 0;
+    private int startGridLine, endGridLine, countGridLine;
+    private float widthGridLine = 14;
 
     MyXAxisRender(ViewPortHandler viewPortHandler, XAxis xAxis, Transformer trans, MyBarChart chart) {
         super(viewPortHandler, xAxis, trans);
         this.chart = chart;
+    }
+
+    public void setNumX(float numX) {
+        this.numX = numX;
+    }
+
+    public void setGetXY(float getX) {
+        this.getX = getX;
+    }
+
+    public void setNumGridLines(int startGridLine, int endGridLine, float widthGridLine) {
+        this.startGridLine = startGridLine;
+        this.countGridLine = endGridLine * 2;
+        this.endGridLine = endGridLine;
+        this.widthGridLine = widthGridLine;
     }
 
     private Path mRenderGridLinesPath = new Path();
@@ -38,11 +56,11 @@ class MyXAxisRender extends XAxisRenderer {
         int clipRestoreCount = c.save();
         c.clipRect(getGridClippingRect());
 
-        for (int i = 8; i + 2 < chart.getData().getEntryCount(); i += 12) {
+        for (int i = startGridLine; i + 2 < chart.getData().getEntryCount(); i += countGridLine) {
             if (mViewPortHandler.isInBoundsLeft(chart.getData().getDataSetByIndex(0).getEntriesForXValue(i).get(0).getX())
                     || mViewPortHandler.isInBoundsRight(chart.getData().getDataSetByIndex(0).getEntriesForXValue(i + 2).get(0).getX())) {
                 list.add(chart.getData().getDataSetByIndex(0).getEntriesForXValue(i).get(0).getX());
-                list.add(chart.getData().getDataSetByIndex(0).getEntriesForXValue(i + 3).get(0).getX());
+                list.add(chart.getData().getDataSetByIndex(0).getEntriesForXValue(i + endGridLine).get(0).getX());
             }
         }
 
@@ -70,11 +88,11 @@ class MyXAxisRender extends XAxisRenderer {
 
         mGridPaint.setStyle(Paint.Style.FILL);
 
-        gridLinePath.moveTo(x - 43, mViewPortHandler.contentBottom());
-        gridLinePath.lineTo(x - 43, mViewPortHandler.contentTop());
-        gridLinePath.lineTo(y + 43, mViewPortHandler.contentTop());
-        gridLinePath.lineTo(y + 43, mViewPortHandler.contentBottom());
-        gridLinePath.lineTo(x - 43, mViewPortHandler.contentBottom());
+        gridLinePath.moveTo(x - widthGridLine, mViewPortHandler.contentBottom());
+        gridLinePath.lineTo(x - widthGridLine, mViewPortHandler.contentTop());
+        gridLinePath.lineTo(y - widthGridLine, mViewPortHandler.contentTop());
+        gridLinePath.lineTo(y - widthGridLine, mViewPortHandler.contentBottom());
+        gridLinePath.lineTo(x - widthGridLine, mViewPortHandler.contentBottom());
 
         // draw a path because lines don't support dashing on lower android versions
         c.drawPath(gridLinePath, mGridPaint);
@@ -89,23 +107,33 @@ class MyXAxisRender extends XAxisRenderer {
         float[] positions = new float[48];
         String[] strings = new String[48];
         int hour = 0;
-        float k = 3.5F;
-        for (int i = 0; i < positions.length; i+=2) {
+        float k = numX;
+        for (int i = 0; i < positions.length; i += 2) {
 
-            positions[i] = k; //mXAxis.mCenteredEntries[i / 2];
-            positions[i + 1] = k; //mXAxis.mCenteredEntries[i / 2];
-            strings[i] =(hour<10?"0":"")+ hour + ":00"; //mXAxis.mCenteredEntries[i / 2];
-            strings[i + 1] =(hour<10?"0":"")+ hour + ":00"; //mXAxis.mCenteredEntries[i / 2];
-            hour++;
-            k += 6;
+            if (getX == 0) {
+                positions[i] = k; //mXAxis.mCenteredEntries[i / 2];
+                positions[i + 1] = k; //mXAxis.mCenteredEntries[i / 2];
+                strings[i] = (hour < 10 ? "0" : "") + hour + ":00"; //mXAxis.mCenteredEntries[i / 2];
+                strings[i + 1] = (hour < 10 ? "0" : "") + hour + ":00"; //mXAxis.mCenteredEntries[i / 2];
+                hour++;
+                k += 6;
 //            drawLabel(c, "ssss", x, pos, anchor, labelRotationAngleDegrees);
+            } else {
+                int h = (int) (getX / 6);
+                positions[i] = k; //mXAxis.mCenteredEntries[i / 2];
+                positions[i + 1] = k; //mXAxis.mCenteredEntries[i / 2];
+                strings[i] = (h < 10 ? "0" : "") + h + ":" + (hour == 0 ? "0" : "") + hour; //mXAxis.mCenteredEntries[i / 2];
+                strings[i + 1] = (h < 10 ? "0" : "") + h + ":" + (hour == 0 ? "0" : "") + hour; //mXAxis.mCenteredEntries[i / 2];
+                hour+=10;
+                k += 5;
+            }
         }
 
         mTrans.pointValuesToPixel(positions);
 
-        for (int i = 0; i < positions.length; i+=2) {
+        for (int i = 0; i < positions.length; i += 2) {
             if (mViewPortHandler.isInBoundsX(positions[i]))
-            drawLabel(c, strings[i], positions[i], pos, anchor, labelRotationAngleDegrees);
+                drawLabel(c, strings[i], positions[i], pos, anchor, labelRotationAngleDegrees);
         }
     }
 }
