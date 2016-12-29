@@ -13,7 +13,7 @@ import com.github.mikephil.charting.components.YAxis;
 public class MyBarChart extends BarChart {
 
     public interface Call {
-        void doCall();
+        void doCall(float x);
     }
 
     Call ref;
