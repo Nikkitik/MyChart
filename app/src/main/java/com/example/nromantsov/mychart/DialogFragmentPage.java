@@ -57,6 +57,7 @@ public class DialogFragmentPage extends DialogFragment {
 
         Toolbar toolbar = (Toolbar) v.findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.close);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.gridTwo));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,7 +66,10 @@ public class DialogFragmentPage extends DialogFragment {
         });
 
         mChart = (MyBarChart) v.findViewById(R.id.chartFragment);
+        mChart.setRender(mChart.createRender());
         mChart.getDescription().setEnabled(false);
+        mChart.setViewPortOffsets(0, 0, 0, 50);
+        mChart.setBackgroundColor(getResources().getColor(R.color.gridTwo));
 
         XAxis xAxis = mChart.getXAxis();
         MyXAxisRender myXAxisRender = new MyXAxisRender(mChart.getViewPortHandler(), xAxis, mChart.getTransformer(YAxis.AxisDependency.LEFT), mChart);
@@ -79,13 +83,14 @@ public class DialogFragmentPage extends DialogFragment {
         xAxis.setAxisMaximum(30.5f);
         xAxis.setGranularity(1f); // only intervals of 1 day
         xAxis.setLabelCount(6);
+        xAxis.setGridColor(getResources().getColor(R.color.gridOne));
 
-        IAxisValueFormatter custom = new MyAxisValueFormatter();
+        YAxis rightAxis = mChart.getAxisRight();
+        rightAxis.setEnabled(false);
+
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setLabelCount(8, false);
-        leftAxis.setValueFormatter(custom);
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setSpaceTop(15);
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setEnabled(false);
         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
         mChart.setVisibleXRange(1, 30.5f);
@@ -136,11 +141,10 @@ public class DialogFragmentPage extends DialogFragment {
             float run = (float) Math.random() * mult;
 
 
-            yVals1.add(new BarEntry(i, new float[]{walk, aerobic, run}));
+            yVals1.add(new BarEntry(i, walk));
         }
 
         BarDataSet set1 = new BarDataSet(yVals1, "The year 2017");
-        set1.setColors(MyColor.THREE_COLORS);
 
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1);
