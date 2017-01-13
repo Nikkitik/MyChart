@@ -57,7 +57,7 @@ public class MyBarChartListener extends BarLineChartTouchListener {
         }
 
         Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
-        Log.d("...", "X: " + e.getX() + " Y: " + e.getY());
+//        Log.d("...", "X: " + e.getX() + " Y: " + e.getY());
         performHighlight(h, e);
 
         ref.doCall(h.getX());
@@ -65,7 +65,7 @@ public class MyBarChartListener extends BarLineChartTouchListener {
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        Log.d("...", "Single X: " + e.getX() + " Y: " + e.getY());
+
         mLastGesture = ChartGesture.SINGLE_TAP;
 
         OnChartGestureListener l = mChart.getOnChartGestureListener();
