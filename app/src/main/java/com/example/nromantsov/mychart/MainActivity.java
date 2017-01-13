@@ -24,29 +24,31 @@ public class MainActivity extends AppCompatActivity {
 
         mChart = (MyBarChart) findViewById(R.id.chart1);
         mChart.getDescription().setEnabled(false);
+        mChart.setViewPortOffsets(0, 0, 0, 50);
+        mChart.setBackgroundColor(getResources().getColor(R.color.gridTwo));
 
         XAxis xAxis = mChart.getXAxis();
         MyXAxisRender myXAxisRender = new MyXAxisRender(mChart.getViewPortHandler(), xAxis, mChart.getTransformer(YAxis.AxisDependency.LEFT), mChart);
         myXAxisRender.setNumX(3.5f);
-        myXAxisRender.setNumGridLines(7, 6, 14);
+        myXAxisRender.setNumGridLines(7, 6, 8);
         mChart.setXAxisRenderer(myXAxisRender);
 
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(true);
+        xAxis.setGridColor(getResources().getColor(R.color.gridOne));
         xAxis.setAxisMaximum(144.5f);
         xAxis.setGranularity(1f); // only intervals of 1 day
         xAxis.setLabelCount(6);
 
+        YAxis rightAxis = mChart.getAxisRight();
+        rightAxis.setEnabled(false);
 
-        IAxisValueFormatter custom = new MyAxisValueFormatter();
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setLabelCount(8, false);
-        leftAxis.setValueFormatter(custom);
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setSpaceTop(15f);
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setEnabled(false);
         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
-        mChart.setVisibleXRange(1, 30f);
+        mChart.setVisibleXRange(1, 66.25f);
 
         Legend legend = mChart.getLegend();
         legend.setEnabled(false);
@@ -55,20 +57,26 @@ public class MainActivity extends AppCompatActivity {
 
         mChart.setCall(new MyBarChart.Call() {
             @Override
-            public void doCall(float x) {
-                DialogFragmentPage dialogFragmentPage = new DialogFragmentPage();
-                Bundle bundle = new Bundle();
-                bundle.putFloat("X", x);
-                dialogFragmentPage.setArguments(bundle);
+            public void doCall(final float x) {
 
-                dialogFragmentPage.setDialogInter(new DialogFragmentPage.DialogInter() {
+                mChart.postDelayed(new Runnable() {
                     @Override
-                    public void onDismiss() {
-                        mChart.highlightValue(null);
-                    }
-                });
+                    public void run() {
+                        DialogFragmentPage dialogFragmentPage = new DialogFragmentPage();
+                        Bundle bundle = new Bundle();
+                        bundle.putFloat("X", x);
+                        dialogFragmentPage.setArguments(bundle);
 
-                dialogFragmentPage.show(getSupportFragmentManager(), "dialog");
+                        dialogFragmentPage.setDialogInter(new DialogFragmentPage.DialogInter() {
+                            @Override
+                            public void onDismiss() {
+                                mChart.highlightValue(null);
+                            }
+                        });
+
+                        dialogFragmentPage.show(getSupportFragmentManager(), "dialog");
+                    }
+                }, 1000);
             }
         });
     }
@@ -86,18 +94,17 @@ public class MainActivity extends AppCompatActivity {
             float run = (float) Math.random() * mult;
 
 
-            yVals1.add(new BarEntry(i, new float[] {walk, aerobic, run}));
+            yVals1.add(new BarEntry(i, new float[]{walk, aerobic, run}));
         }
 
         BarDataSet set1 = new BarDataSet(yVals1, "The year 2017");
-        set1.setColors(MyColor.THREE_COLORS);
 
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1);
 
         BarData data = new BarData(dataSets);
         data.setValueTextSize(10f);
-        data.setBarWidth(0.7f);
+        data.setBarWidth(0.5f);
         data.setDrawValues(false);
 
         mChart.setData(data);
