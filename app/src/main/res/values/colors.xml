@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="white">#FAFAFA</color>
+    <color name="gridTwo">#e7e9eb</color>
+    <color name="gridOne">#80fafafa</color>
 </resources>
