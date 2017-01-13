@@ -88,11 +88,11 @@ class MyXAxisRender extends XAxisRenderer {
 
         mGridPaint.setStyle(Paint.Style.FILL);
 
-        gridLinePath.moveTo(x - widthGridLine, mViewPortHandler.contentBottom());
-        gridLinePath.lineTo(x - widthGridLine, mViewPortHandler.contentTop());
-        gridLinePath.lineTo(y - widthGridLine, mViewPortHandler.contentTop());
-        gridLinePath.lineTo(y - widthGridLine, mViewPortHandler.contentBottom());
-        gridLinePath.lineTo(x - widthGridLine, mViewPortHandler.contentBottom());
+        gridLinePath.moveTo(x - widthGridLine * 1.3f, mViewPortHandler.contentBottom());
+        gridLinePath.lineTo(x - widthGridLine * 1.3f, mViewPortHandler.contentTop());
+        gridLinePath.lineTo(y - widthGridLine * 1.3f, mViewPortHandler.contentTop());
+        gridLinePath.lineTo(y - widthGridLine * 1.3f, mViewPortHandler.contentBottom());
+        gridLinePath.lineTo(x - widthGridLine * 1.3f, mViewPortHandler.contentBottom());
 
         // draw a path because lines don't support dashing on lower android versions
         c.drawPath(gridLinePath, mGridPaint);
@@ -131,7 +131,7 @@ class MyXAxisRender extends XAxisRenderer {
 
         mTrans.pointValuesToPixel(positions);
 
-        for (int i = 0; i < positions.length; i += 2) {
+        for (int i = 0; i < positions.length; i += 4) {
             if (mViewPortHandler.isInBoundsX(positions[i]))
                 drawLabel(c, strings[i], positions[i], pos, anchor, labelRotationAngleDegrees);
         }
