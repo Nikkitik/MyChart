@@ -26,7 +26,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import java.util.ArrayList;
 
 public class DialogFragmentPage extends DialogFragment {
-
     MyBarChart mChart;
     float x;
 
@@ -71,7 +70,8 @@ public class DialogFragmentPage extends DialogFragment {
         mChart.getDescription().setEnabled(false);
         mChart.setViewPortOffsets(0, 0, 0, 50);
         mChart.setBackgroundColor(getResources().getColor(R.color.gridTwo));
-        mChart.setColorDialog(new int[] {Color.rgb(0, 101, 105), Color.rgb(138, 217, 219), Color.rgb(0, 155, 161)});
+//        mChart.setColor(new int[] {Color.rgb(0, 101, 105), Color.rgb(138, 217, 219), Color.rgb(0, 155, 161)});
+//        mChart.setRadius(7f);
 
         XAxis xAxis = mChart.getXAxis();
         MyXAxisRender myXAxisRender = new MyXAxisRender(mChart.getViewPortHandler(), xAxis, mChart.getTransformer(YAxis.AxisDependency.LEFT), mChart);
