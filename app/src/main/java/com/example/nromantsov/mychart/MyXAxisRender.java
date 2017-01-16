@@ -24,6 +24,15 @@ class MyXAxisRender extends XAxisRenderer {
     private float getX = 0;
     private int startGridLine, endGridLine, countGridLine;
     private float widthGridLine = 14;
+    private static int hour;
+
+    public void setHour(int hour) {
+        MyXAxisRender.hour = hour;
+    }
+
+    public int getHour() {
+        return hour;
+    }
 
     MyXAxisRender(ViewPortHandler viewPortHandler, XAxis xAxis, Transformer trans, MyBarChart chart) {
         super(viewPortHandler, xAxis, trans);
@@ -106,11 +115,15 @@ class MyXAxisRender extends XAxisRenderer {
 
         float[] positions = new float[48];
         String[] strings = new String[48];
-        int hour = 0;
+        int hour = getHour();
+        int minutes = 0;
         float k = numX;
         for (int i = 0; i < positions.length; i += 2) {
 
             if (getX == 0) {
+                if (hour > 23)
+                    hour = 0;
+
                 positions[i] = k; //mXAxis.mCenteredEntries[i / 2];
                 positions[i + 1] = k; //mXAxis.mCenteredEntries[i / 2];
                 strings[i] = (hour < 10 ? "0" : "") + hour + ":00"; //mXAxis.mCenteredEntries[i / 2];
@@ -119,12 +132,15 @@ class MyXAxisRender extends XAxisRenderer {
                 k += 6;
 //            drawLabel(c, "ssss", x, pos, anchor, labelRotationAngleDegrees);
             } else {
-                int h = (int) (getX / 6);
+                int h = (int) ((getX / 6.01f) + getHour());
+                if (h > 23)
+                    h -= 24;
+
                 positions[i] = k; //mXAxis.mCenteredEntries[i / 2];
                 positions[i + 1] = k; //mXAxis.mCenteredEntries[i / 2];
-                strings[i] = (h < 10 ? "0" : "") + h + ":" + (hour == 0 ? "0" : "") + hour; //mXAxis.mCenteredEntries[i / 2];
-                strings[i + 1] = (h < 10 ? "0" : "") + h + ":" + (hour == 0 ? "0" : "") + hour; //mXAxis.mCenteredEntries[i / 2];
-                hour+=10;
+                strings[i] = (h < 10 ? "0" : "") + h + ":" + (minutes == 0 ? "0" : "") + minutes; //mXAxis.mCenteredEntries[i / 2];
+                strings[i + 1] = (h < 10 ? "0" : "") + h + ":" + (minutes == 0 ? "0" : "") + minutes; //mXAxis.mCenteredEntries[i / 2];
+                minutes += 10;
                 k += 5;
             }
         }
