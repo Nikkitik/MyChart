@@ -46,6 +46,14 @@ public class MyBarChart extends BarChart {
         mChartTouchListener = new MyBarChartListener(this, mViewPortHandler.getMatrixTouch(), 3f);
     }
 
+    public void setColor(int[] color) {
+        ((MyBarChartRender)mRenderer).setColor(color);
+    }
+
+    public void setColorDialog(int[] color) {
+        ((MyBarChartDialogRender)mRenderer).setColor(color);
+    }
+
     @Override
     protected void calcMinMax() {
         mXAxis.calculate(mData.getXMin(), mData.getXMax() + mData.getBarWidth() * 2f);
@@ -54,7 +62,7 @@ public class MyBarChart extends BarChart {
         mAxisLeft.calculate(mData.getYMin(YAxis.AxisDependency.LEFT), mData.getYMax(YAxis.AxisDependency.LEFT));
     }
 
-    public void setRender(com.github.mikephil.charting.renderer.DataRenderer render){
+    public void setRender(com.github.mikephil.charting.renderer.DataRenderer render) {
         mRenderer = render;
     }
 
