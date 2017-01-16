@@ -1,5 +1,6 @@
 package com.example.nromantsov.mychart;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -25,17 +26,19 @@ public class MainActivity extends AppCompatActivity {
         mChart = (MyBarChart) findViewById(R.id.chart1);
         mChart.getDescription().setEnabled(false);
         mChart.setViewPortOffsets(0, 0, 0, 50);
-        mChart.setBackgroundColor(getResources().getColor(R.color.gridTwo));
+        mChart.setBackgroundColor(getResources().getColor(R.color.gridTwo)); //фон линии 1
 
         XAxis xAxis = mChart.getXAxis();
         MyXAxisRender myXAxisRender = new MyXAxisRender(mChart.getViewPortHandler(), xAxis, mChart.getTransformer(YAxis.AxisDependency.LEFT), mChart);
         myXAxisRender.setNumX(3.5f);
         myXAxisRender.setNumGridLines(7, 6, 8);
+        myXAxisRender.setHour(0);
         mChart.setXAxisRenderer(myXAxisRender);
+        mChart.setColor(new int[] {Color.rgb(0, 101, 105), Color.rgb(138, 217, 219), Color.rgb(0, 155, 161)});
 
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(true);
-        xAxis.setGridColor(getResources().getColor(R.color.gridOne));
+        xAxis.setGridColor(getResources().getColor(R.color.gridOne)); //фон линии 2
         xAxis.setAxisMaximum(144.5f);
         xAxis.setGranularity(1f); // only intervals of 1 day
         xAxis.setLabelCount(6);
