@@ -28,9 +28,14 @@ class MyBarChartDialogRender extends MyBarChartRender {
     private static final float CORNER_RADIUS_BIG = Utils.convertDpToPixel(4f);
     private static final float CORNER_RADIUS_SMALL = Utils.convertDpToPixel(2f);
     private static final int RADIUS_BARS_THRESHOLD = 10;
+    private int[] color = new int[] {Color.rgb(0, 101, 105), Color.rgb(138, 217, 219), Color.rgb(0, 155, 161)};
 
     MyBarChartDialogRender(BarDataProvider chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
         super(chart, animator, viewPortHandler);
+    }
+
+    public void setColor(int[] color) {
+        this.color = color;
     }
 
     private RectF mBarShadowRectBuffer = new RectF();
@@ -109,11 +114,11 @@ class MyBarChartDialogRender extends MyBarChartRender {
                 break;
 
             if (buffer.buffer[j + 1] <= 300)
-                mRenderPaint.setColor(Color.rgb(0, 101, 105));
+                mRenderPaint.setColor(color[0]);
             else if (buffer.buffer[j + 1] < 500 && buffer.buffer[j + 1] > 300)
-                mRenderPaint.setColor(Color.rgb(138, 217, 219));
+                mRenderPaint.setColor(color[1]);
             else
-                mRenderPaint.setColor(Color.rgb(0, 155, 161));
+                mRenderPaint.setColor(color[2]);
 
             c.drawPath(getPathRoundRectTop(buffer.buffer[j], buffer.buffer[j + 1],
                     buffer.buffer[j + 2], buffer.buffer[j + 3], cornerRadius), mRenderPaint);
