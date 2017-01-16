@@ -1,6 +1,7 @@
 package com.example.nromantsov.mychart;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -70,6 +71,7 @@ public class DialogFragmentPage extends DialogFragment {
         mChart.getDescription().setEnabled(false);
         mChart.setViewPortOffsets(0, 0, 0, 50);
         mChart.setBackgroundColor(getResources().getColor(R.color.gridTwo));
+        mChart.setColorDialog(new int[] {Color.rgb(0, 101, 105), Color.rgb(138, 217, 219), Color.rgb(0, 155, 161)});
 
         XAxis xAxis = mChart.getXAxis();
         MyXAxisRender myXAxisRender = new MyXAxisRender(mChart.getViewPortHandler(), xAxis, mChart.getTransformer(YAxis.AxisDependency.LEFT), mChart);
