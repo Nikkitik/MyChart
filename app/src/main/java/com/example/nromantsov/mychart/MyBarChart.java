@@ -46,13 +46,21 @@ public class MyBarChart extends BarChart {
         mChartTouchListener = new MyBarChartListener(this, mViewPortHandler.getMatrixTouch(), 3f);
     }
 
-    public void setColor(int[] color) {
-        ((MyBarChartRender)mRenderer).setColor(color);
-    }
-
-    public void setColorDialog(int[] color) {
-        ((MyBarChartDialogRender)mRenderer).setColor(color);
-    }
+//    public void setRadius(float radius) {
+//        ((MyBarChartRender)mRenderer).setRadius(radius);
+//    }
+//
+//    public void setRadiusDialog(float radius) {
+//        ((MyBarChartDialogRender)mRenderer).setRadius(radius);
+//    }
+//
+//    public void setColor(int[] color) {
+//        ((MyBarChartRender)mRenderer).setColor(color);
+//    }
+//
+//    public void setColorDialog(int[] color) {
+//        ((MyBarChartDialogRender)mRenderer).setColor(color);
+//    }
 
     @Override
     protected void calcMinMax() {
