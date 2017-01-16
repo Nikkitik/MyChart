@@ -10,7 +10,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.util.ArrayList;
@@ -34,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
         myXAxisRender.setNumGridLines(7, 6, 8);
         myXAxisRender.setHour(0);
         mChart.setXAxisRenderer(myXAxisRender);
-        mChart.setColor(new int[] {Color.rgb(0, 101, 105), Color.rgb(138, 217, 219), Color.rgb(0, 155, 161)});
+
+//        mChart.setColor(new int[] {Color.rgb(0, 101, 105), Color.rgb(138, 217, 219), Color.rgb(0, 155, 161)});
+//        mChart.setRadius(5f);
 
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(true);
