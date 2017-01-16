@@ -35,9 +35,14 @@ class MyBarChartRender extends BarChartRenderer {
     private static final float CORNER_RADIUS_BIG = Utils.convertDpToPixel(4f);
     private static final float CORNER_RADIUS_SMALL = Utils.convertDpToPixel(2f);
     private static final int RADIUS_BARS_THRESHOLD = 10;
+    private int[] color = new int[] {Color.rgb(0, 101, 105), Color.rgb(138, 217, 219), Color.rgb(0, 155, 161)};
 
     MyBarChartRender(BarDataProvider chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
         super(chart, animator, viewPortHandler);
+    }
+
+    public void setColor(int[] color) {
+        this.color = color;
     }
 
     private RectF mBarShadowRectBuffer = new RectF();
@@ -118,30 +123,30 @@ class MyBarChartRender extends BarChartRenderer {
 
             if (buffer.buffer[j + 1] == buffer.buffer[j + 9]) {
                 if (buffer.buffer[j + 1] == buffer.buffer[j + 5]) {
-                    mRenderPaint.setColor(Color.rgb(0, 101, 105));
+                    mRenderPaint.setColor(color[0]);
                     c.drawPath(getPathRoundRectTop(buffer.buffer[j], buffer.buffer[j + 1],
                             buffer.buffer[j + 2], buffer.buffer[j + 3], cornerRadius), mRenderPaint);
                 } else {
-                    mRenderPaint.setColor(Color.rgb(0, 101, 105));
+                    mRenderPaint.setColor(color[0]);
                     c.drawPath(getPathRectTop(buffer.buffer[j], buffer.buffer[j + 1],
                             buffer.buffer[j + 2], buffer.buffer[j + 3]), mRenderPaint);
                 }
             } else {
-                mRenderPaint.setColor(Color.rgb(0, 101, 105));
+                mRenderPaint.setColor(color[0]);
                 c.drawPath(getPathRectTop(buffer.buffer[j], buffer.buffer[j + 1],
                         buffer.buffer[j + 2], buffer.buffer[j + 3]), mRenderPaint);
             }
 
             if (buffer.buffer[j + 5] == buffer.buffer[j + 9]) {
-                mRenderPaint.setColor(Color.rgb(138, 217, 219));
+                mRenderPaint.setColor(color[1]);
                 c.drawPath(getPathRoundRectTop(buffer.buffer[j + 4], buffer.buffer[j + 5],
                         buffer.buffer[j + 6], buffer.buffer[j + 7], cornerRadius), mRenderPaint);
             } else {
-                mRenderPaint.setColor(Color.rgb(138, 217, 219));
+                mRenderPaint.setColor(color[1]);
                 c.drawPath(getPathRectTop(buffer.buffer[j + 4], buffer.buffer[j + 5],
                         buffer.buffer[j + 6], buffer.buffer[j + 7]), mRenderPaint);
 
-                mRenderPaint.setColor(Color.rgb(0, 155, 161));
+                mRenderPaint.setColor(color[2]);
                 c.drawPath(getPathRoundRectTop(buffer.buffer[j + 8], buffer.buffer[j + 9],
                         buffer.buffer[j + 10], buffer.buffer[j + 11], cornerRadius), mRenderPaint);
             }
@@ -221,26 +226,6 @@ class MyBarChartRender extends BarChartRenderer {
             }
 
             Transformer trans = mChart.getTransformer(set.getAxisDependency());
-
-//            Paint paint = new Paint();
-//            paint.setColor(Color.BLACK);
-//            paint.setStyle(Paint.Style.STROKE);
-//            paint.setStrokeWidth(1);
-//            Path path = new Path();
-//            path.moveTo(xMin - barData.getBarWidth(), Utils.convertDpToPixel(20));
-//            path.lineTo(xMin - barData.getBarWidth(), Utils.convertDpToPixel(0));
-//            trans.pathValueToPixel(path);
-//            c.drawPath(path, paint);
-//
-//            Paint paint1 = new Paint();
-//            paint1.setColor(Color.BLACK);
-//            paint1.setStyle(Paint.Style.STROKE);
-//            paint1.setStrokeWidth(1);
-//            Path path1 = new Path();
-//            path1.moveTo(xMax + barData.getBarWidth(), Utils.convertDpToPixel(0));
-//            path1.lineTo(xMax + barData.getBarWidth(), Utils.convertDpToPixel(20));
-//            trans.pathValueToPixel(path1);
-//            c.drawPath(path1, paint1);
 
             prepareBarHighlight(xMin, xMax, barData.getBarWidth(), trans, 1);
 
