@@ -23,7 +23,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  * Created by n.romantsov on 05.12.2016.
  */
 
-class MyBarChartDialogRender extends BarChartRenderer {
+class MyBarChartDialogRender extends BarChartRenderer implements IRender {
 
     private static final float CORNER_RADIUS_BIG = Utils.convertDpToPixel(4f);
     private static final float CORNER_RADIUS_SMALL = Utils.convertDpToPixel(2f);
@@ -135,5 +135,15 @@ class MyBarChartDialogRender extends BarChartRenderer {
 
         path.close();
         return path;
+    }
+
+    @Override
+    public void setColorRender(int[] colors) {
+        this.colors = colors;
+    }
+
+    @Override
+    public void setRadiusRender(float radius) {
+        this.cornerRadius = radius;
     }
 }

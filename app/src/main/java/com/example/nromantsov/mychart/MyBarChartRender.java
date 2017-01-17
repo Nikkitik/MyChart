@@ -30,7 +30,7 @@ import java.util.List;
  * Created by n.romantsov on 05.12.2016.
  */
 
-class MyBarChartRender extends BarChartRenderer {
+class MyBarChartRender extends BarChartRenderer implements IRender {
 
     private static final float CORNER_RADIUS_BIG = Utils.convertDpToPixel(4f);
     private static final float CORNER_RADIUS_SMALL = Utils.convertDpToPixel(2f);
@@ -39,6 +39,16 @@ class MyBarChartRender extends BarChartRenderer {
 
     MyBarChartRender(BarDataProvider chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
         super(chart, animator, viewPortHandler);
+    }
+
+    @Override
+    public void setColorRender(int[] colors) {
+        this.colors = colors;
+    }
+
+    @Override
+    public void setRadiusRender(float radius) {
+        this.cornerRadius = radius;
     }
 
     private RectF mBarShadowRectBuffer = new RectF();
