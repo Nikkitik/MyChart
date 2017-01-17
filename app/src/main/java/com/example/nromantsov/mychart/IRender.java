@@ -5,6 +5,6 @@ package com.example.nromantsov.mychart;
  */
 
 public interface IRender {
-    void setColor(int[] colors);
-    void setRadius(float radius);
+    void setColorRender(int[] colors);
+    void setRadiusRender(float radius);
 }
