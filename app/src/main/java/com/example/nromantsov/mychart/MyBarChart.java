@@ -13,7 +13,6 @@ import com.github.mikephil.charting.renderer.DataRenderer;
  */
 
 public class MyBarChart extends BarChart {
-
     public interface Call {
         void doCall(float x);
     }
@@ -46,21 +45,13 @@ public class MyBarChart extends BarChart {
         mChartTouchListener = new MyBarChartListener(this, mViewPortHandler.getMatrixTouch(), 3f);
     }
 
-//    public void setRadius(float radius) {
-//        ((MyBarChartRender)mRenderer).setRadius(radius);
-//    }
-//
-//    public void setRadiusDialog(float radius) {
-//        ((MyBarChartDialogRender)mRenderer).setRadius(radius);
-//    }
-//
-//    public void setColor(int[] color) {
-//        ((MyBarChartRender)mRenderer).setColor(color);
-//    }
-//
-//    public void setColorDialog(int[] color) {
-//        ((MyBarChartDialogRender)mRenderer).setColor(color);
-//    }
+    public void setRadius(float radius) {
+        ((IRender) mRenderer).setRadiusRender(radius);
+    }
+
+    public void setColor(int[] color) {
+        ((IRender) mRenderer).setColorRender(color);
+    }
 
     @Override
     protected void calcMinMax() {
