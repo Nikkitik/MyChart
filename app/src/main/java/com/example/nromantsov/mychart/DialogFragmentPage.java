@@ -70,8 +70,8 @@ public class DialogFragmentPage extends DialogFragment {
         mChart.getDescription().setEnabled(false);
         mChart.setViewPortOffsets(0, 0, 0, 50);
         mChart.setBackgroundColor(getResources().getColor(R.color.gridTwo));
-//        mChart.setColor(new int[] {Color.rgb(0, 101, 105), Color.rgb(138, 217, 219), Color.rgb(0, 155, 161)});
-//        mChart.setRadius(7f);
+        mChart.setColor(new int[] {Color.rgb(0, 101, 105), Color.rgb(138, 217, 219), Color.rgb(0, 155, 161)});
+        mChart.setRadius(7f);
 
         XAxis xAxis = mChart.getXAxis();
         MyXAxisRender myXAxisRender = new MyXAxisRender(mChart.getViewPortHandler(), xAxis, mChart.getTransformer(YAxis.AxisDependency.LEFT), mChart);

@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
         myXAxisRender.setHour(0);
         mChart.setXAxisRenderer(myXAxisRender);
 
-//        mChart.setColor(new int[] {Color.rgb(0, 101, 105), Color.rgb(138, 217, 219), Color.rgb(0, 155, 161)});
-//        mChart.setRadius(5f);
+        mChart.setColor(new int[] {Color.rgb(0, 101, 105), Color.rgb(138, 217, 219), Color.rgb(0, 155, 161)});
+        mChart.setRadius(5f);
 
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(true);
